@@ -1,0 +1,5 @@
+Hello from hello
+1
+666
+fgamma(1)=1
+fgamma(1)=1
