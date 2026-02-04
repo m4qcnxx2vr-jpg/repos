@@ -10,6 +10,6 @@ Out.txt: main
 	./$< > $@
 
 main: main.o hello.o
-main.o = hello.h
+main.o = hello.h vec.h
 
 

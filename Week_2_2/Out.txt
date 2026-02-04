@@ -16,4 +16,6 @@ v[1]=6
 v[2]=6
 
 Now we use the class vec we made
+parametrized constructor called...
 6 2 3
+destructor called...

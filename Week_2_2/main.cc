@@ -51,8 +51,10 @@ std::cout << "\nNow comes the do loop\n";
 
 std::cout << "\nNow we use the class vec we made";
     std::cout << '\n';
-    pp::vec alpha {1,2,3};
+    {
+    pp::vec alpha(1,2,3);
     alpha.x=6;
     std::cout <<alpha.x <<' '<< alpha.y <<' '<< alpha.z <<'\n';
-    return 0;
+    }
+return 0;
 }
