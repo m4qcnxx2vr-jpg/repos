@@ -1,0 +1,19 @@
+Hello from hello
+a == b
+1 2 3 
+1 2 3 
+1 2 3 
+1 2 3 
+6 6 6 
+Now comes the while loop
+v[0]=6
+v[1]=6
+v[2]=6
+
+Now comes the do loop
+v[0]=6
+v[1]=6
+v[2]=6
+
+Now we use the class vec we made
+6 2 3
