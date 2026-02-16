@@ -5,5 +5,5 @@ set ylabel "y"
 set key right bottom
 set tics out
 plot [-3:3] \
-    "erf.data" using 1:2 with points title "erf from cmath" \
+    "erf.data" using 1:2 with points pointtype 4 title "erf from cmath" \
     ,erf(x)

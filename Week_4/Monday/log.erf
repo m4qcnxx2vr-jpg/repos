@@ -1,3 +1,6 @@
 xmin= -2
 xmax= 2
 dx= 0.125
+xmin= 0
+xmax= 10
+dx= 0.125
