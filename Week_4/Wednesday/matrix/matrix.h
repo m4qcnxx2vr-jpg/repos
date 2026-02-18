@@ -1,0 +1,44 @@
+#pragma once
+#include <vector>
+#include <iostream>
+#include <string>
+
+namespace pp {
+
+struct vector {
+    std::vector<double> data;
+
+    vector() = default;
+    vector(int n) : data(n) {}
+    vector(const vector&) = default;
+    vector(vector&&) noexcept = default;
+    ~vector() = default;
+
+    int size() const { return static_cast<int>(data.size()); }
+
+    double& operator[](int i) { return data[i]; }
+    const double& operator[](int i) const { return data[i]; }
+
+    void print(std::string s = "") {
+        std::cout << s << " ";
+        for (auto& d : data) std::cout << d << " ";
+        std::cout << "\n";
+    }
+
+    vector& operator+=(const vector& other) {
+        for (int i = 0; i < size(); i++) (*this)[i] += other[i];
+        return (*this);
+    }
+
+    vector& operator-=(const vector& other) {
+        for (int i = 0; i < size(); i++) (*this)[i] -= other[i];
+        return (*this);
+    }
+
+    vector& operator*=(const double c) {
+        for (int i = 0; i < size(); i++) (*this)[i] *= c;
+        return (*this);
+    }
+};
+
+} // namespace pp
