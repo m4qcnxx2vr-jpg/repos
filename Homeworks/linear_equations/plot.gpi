@@ -1,0 +1,15 @@
+set terminal svg size 900,600 dynamic
+set output "qr_scaling.svg"
+
+set title "QR factorization runtime vs matrix size"
+set xlabel "N"
+set ylabel "Time (seconds)"
+set grid
+
+# Fit model: time ~ a*x^3
+f(x) = a*x**3
+a = 1e-9
+fit f(x) "out.times.data" using 1:2 via a
+
+plot "out.times.data" using 1:2 with points pt 7 title "Measured time", \
+     f(x) with lines lw 2 title sprintf("Fit: a*x^3 (a=%g)", a)
