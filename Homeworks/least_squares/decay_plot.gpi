@@ -1,0 +1,19 @@
+set terminal svg size 900,600 dynamic enhanced font "Arial,14"
+set output "decay.svg"
+
+load "fit_params.gpi"
+
+set xlabel "Time (days)"
+set ylabel "Activity (relative units)"
+set title "Radioactive decay of ThX"
+set grid
+set key top right
+
+f(x)  = exp(c0 + c1*x)
+fp(x) = exp((c0 + dc0) + (c1 + dc1)*x)
+fm(x) = exp((c0 - dc0) + (c1 - dc1)*x)
+
+plot "decay_data.txt" using 1:2:3 with yerrorbars pt 7 ps 1 title "Data", \
+     f(x)  with lines lw 2 title sprintf("Best fit: y = %.2f exp(-%.3f t)", a, lambda), \
+     fp(x) with lines dt 2 lw 2 title "Fit with c + dc", \
+     fm(x) with lines dt 3 lw 2 title "Fit with c - dc"

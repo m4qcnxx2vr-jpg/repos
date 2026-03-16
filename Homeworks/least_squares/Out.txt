@@ -1,0 +1,45 @@
+Original data:
+i   t   y   dy
+0   1   117   6
+1   2   100   5
+2   3   88   4
+3   4   72   4
+4   6   53   4
+5   9   29.5   3
+6   10   25.2   3
+7   13   15.2   2
+8   15   11.1   2
+
+Transformed data:
+i   t   ln(y)   dln(y)
+0   1   4.76217   0.0512821
+1   2   4.60517   0.05
+2   3   4.47734   0.0454545
+3   4   4.27667   0.0555556
+4   6   3.97029   0.0754717
+5   9   3.38439   0.101695
+6   10   3.22684   0.119048
+7   13   2.7213   0.131579
+8   15   2.40695   0.18018
+
+Fit coefficients for ln(y) = c0 + c1*t:
+c0 = 4.95866 +/- 0.0354019
+c1 = -0.170624 +/- 0.00715662
+
+Covariance matrix:
+
+   0.0012533 -0.000197055 
+-0.000197055  5.12172e-05 
+
+
+Physical parameters in y(t) = a*exp(-lambda*t):
+a = 142.404
+lambda = 0.170624 +/- 0.00715662 day^-1
+Half-life T1/2 = 4.06242 +/- 0.170394 days
+
+Modern value for 224Ra half-life: about 3.63 days
+The modern value does NOT agree within the estimated uncertainty.
+
+Coefficient uncertainties:
+dc0 = 0.0354019
+dc1 = 0.00715662
