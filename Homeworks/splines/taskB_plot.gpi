@@ -1,0 +1,25 @@
+set terminal svg size 900,900 dynamic enhanced font "Arial,14"
+set output "taskB.svg"
+
+set multiplot layout 3,1 title "Quadratic spline interpolation of cos(x)"
+
+set grid
+set key top right
+
+set xlabel "x"
+set ylabel "y"
+plot "qspline_data.txt" using 1:2 with points pt 7 title "data points", \
+     "qspline_curve.txt" using 1:2 with lines lw 2 title "quadratic spline", \
+     cos(x) with lines dt 2 lw 2 title "cos(x)"
+
+set xlabel "x"
+set ylabel "Derivative"
+plot "qspline_curve.txt" using 1:3 with lines lw 2 title "spline derivative", \
+     -sin(x) with lines dt 2 lw 2 title "-sin(x)"
+
+set xlabel "x"
+set ylabel "Integral"
+plot "qspline_curve.txt" using 1:4 with lines lw 2 title "spline integral", \
+     sin(x) with lines dt 2 lw 2 title "sin(x)"
+
+unset multiplot

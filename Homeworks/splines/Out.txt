@@ -1,0 +1,31 @@
+===== Task A: Linear spline =====
+z = 0.25  linterp = 0.938791  linterpInteg = 0.242349
+z = 1.3  linterp = 0.258563  linterpInteg = 0.943697
+z = 4.7  linterp = -0.0130126  linterpInteg = -0.97946
+z = 8.8  linterp = -0.787483  linterpInteg = 0.573358
+
+===== Task B: Quadratic spline =====
+----- y = 1 -----
+b: 0 0 0 0 
+c: 0 0 0 0 
+
+----- y = x -----
+b: 1 1 1 1 
+c: 0 0 0 0 
+
+----- y = x^2 -----
+b: 3 3 7 7 
+c: 0 2 0 2 
+
+Sample values:
+z = 0.25  eval = 0.938791  deriv = -0.244835  integ = 0.242349
+z = 1.3  eval = 0.238745  deriv = -0.906099  integ = 0.957143
+z = 4.7  eval = 0.0175078  deriv = 1.03978  integ = -1.00673
+z = 8.8  eval = -0.78178  deriv = -0.627741  integ = 0.58143
+
+===== Task C: Functional quadratic spline =====
+z = 0.25  f(z) = 0.938791
+z = 1.3  f(z) = 0.238745
+z = 4.7  f(z) = 0.0175078
+z = 8.8  f(z) = -0.78178
+

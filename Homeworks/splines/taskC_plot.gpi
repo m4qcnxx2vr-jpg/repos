@@ -1,0 +1,12 @@
+set terminal svg size 900,600 dynamic enhanced font "Arial,14"
+set output "taskC.svg"
+
+set title "Task C: Functional quadratic spline"
+set xlabel "x"
+set ylabel "y"
+set grid
+set key top right
+
+plot "qspline_data.txt" using 1:2 with points pt 7 title "data points", \
+     "fqinterp_curve.txt" using 1:2 with lines lw 2 title "functional quadratic spline", \
+     cos(x) with lines dt 2 lw 2 title "cos(x)"
