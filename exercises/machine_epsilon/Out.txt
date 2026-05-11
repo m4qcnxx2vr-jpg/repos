@@ -1,0 +1,40 @@
+Machine epsilon
+===============
+
+Calculated epsilons:
+float       eps = 1.19209289550781250000e-07
+double      eps = 2.22044604925031308085e-16
+long double eps = 2.22044604925031308085e-16
+
+System epsilons from std::numeric_limits:
+float       eps = 1.19209289550781250000e-07
+double      eps = 2.22044604925031308085e-16
+long double eps = 2.22044604925031308085e-16
+
+Theoretical checks:
+2^(-23) = 1.19209289550781250000e-07   for float
+2^(-52) = 2.22044604925031308085e-16   for double
+
+Compare calculated values with system values using approx:
+float  correct? true
+double correct? true
+
+Floating-point order of addition
+================================
+
+a == b ? false
+a > 1  ? false
+b > 1  ? true
+
+       tiny = 0.00000000000000011
+1+tiny+tiny = 1.00000000000000000
+tiny+tiny+1 = 1.00000000000000022
+
+Comparing doubles
+=================
+
+d1 == d2 ? false
+approx(d1, d2) ? true
+
+d1 = 0.79999999999999993
+d2 = 0.80000000000000004

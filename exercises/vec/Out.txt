@@ -1,0 +1,96 @@
+Testing vec implementation
+
+a = { 1, 2, 3 }
+b = { 4, 5, 6 }
+
+Addition:
+  a + b = { 1 + 4, 2 + 5, 3 + 6 }
+  test
+  calculated = { 5, 7, 9 }
+  expected   = { 5, 7, 9 }
+  result     = PASS
+
+Subtraction:
+  b - a = { 4 - 1, 5 - 2, 6 - 3 }
+  test
+  calculated = { 3, 3, 3 }
+  expected   = { 3, 3, 3 }
+  result     = PASS
+
+Vector times scalar:
+  a * 2 = { 1 * 2, 2 * 2, 3 * 2 }
+  test
+  calculated = { 2, 4, 6 }
+  expected   = { 2, 4, 6 }
+  result     = PASS
+
+Scalar times vector:
+  2 * a = { 2 * 1, 2 * 2, 2 * 3 }
+  test
+  calculated = { 2, 4, 6 }
+  expected   = { 2, 4, 6 }
+  result     = PASS
+
+Division by scalar:
+  b / 2 = { 4 / 2, 5 / 2, 6 / 2 }
+  test
+  calculated = { 2, 2.5, 3 }
+  expected   = { 2, 2.5, 3 }
+  result     = PASS
+
+Dot product:
+  a dot b = 1 * 4 + 2 * 5 + 3 * 6
+          = 4 + 10 + 18
+  test
+  calculated = 32
+  expected   = 32
+  result     = PASS
+
+Cross product:
+  a cross b = {
+      2 * 6 - 3 * 5,
+      3 * 4 - 1 * 6,
+      1 * 5 - 2 * 4
+  }
+  a cross b = { 12 - 15, 12 - 6, 5 - 8 }
+  test
+  calculated = { -3, 6, -3 }
+  expected   = { -3, 6, -3 }
+  result     = PASS
+
+Norm:
+  norm(a) = sqrt(a dot a)
+          = sqrt(1 * 1 + 2 * 2 + 3 * 3)
+          = sqrt(1 + 4 + 9)
+          = sqrt(14)
+  test
+  calculated = 3.74166
+  expected   = 3.74166
+  result     = PASS
+
+Default constructor:
+  vec zero;
+  expected zero vector = { 0, 0, 0 }
+  test
+  calculated = { 0, 0, 0 }
+  expected   = { 0, 0, 0 }
+  result     = PASS
+
+Copy constructor:
+  vec copy = a;
+  expected copy = a = { 1, 2, 3 }
+  test
+  calculated = { 1, 2, 3 }
+  expected   = { 1, 2, 3 }
+  result     = PASS
+
+Copy assignment:
+  assigned = b;
+  expected assigned = b = { 4, 5, 6 }
+  test
+  calculated = { 4, 5, 6 }
+  expected   = { 4, 5, 6 }
+  result     = PASS
+
+Print method:
+  a printed with print method: 1 2 3

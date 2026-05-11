@@ -1,0 +1,29 @@
+Error function checks
+x = -2, erf_approx(x) = -0.9953221395812188, std::erf(x) = -0.9953222650189527, approx = true
+x = -1, erf_approx(x) = -0.8427006897475899, std::erf(x) = -0.8427007929497148, approx = true
+x = -0.5, erf_approx(x) = -0.5205000163047471, std::erf(x) = -0.5204998778130465, approx = true
+x = 0, erf_approx(x) = 9.999999717180685e-10, std::erf(x) = 0, approx = true
+x = 0.5, erf_approx(x) = 0.5205000163047471, std::erf(x) = 0.5204998778130465, approx = true
+x = 1, erf_approx(x) = 0.8427006897475899, std::erf(x) = 0.8427007929497148, approx = true
+x = 2, erf_approx(x) = 0.9953221395812188, std::erf(x) = 0.9953222650189527, approx = true
+
+Gamma function factorial checks
+Gamma(1) = 1.000000000122337, expected 0! = 1, approx = true
+Gamma(2) = 1.000000000122337, expected 1! = 1, approx = true
+Gamma(3) = 2.000000000244673, expected 2! = 2, approx = true
+Gamma(4) = 6.00000000073402, expected 3! = 6, approx = true
+Gamma(5) = 24.00000000293608, expected 4! = 24, approx = true
+Gamma(6) = 120.0000000146804, expected 5! = 120, approx = false
+Gamma(7) = 720.0000000880824, expected 6! = 720, approx = false
+
+Log-gamma function checks
+ln Gamma(1) = -1.09350976051914e-08, expected ln(0!) = 0, approx = false
+ln Gamma(2) = -1.09350976051914e-08, expected ln(1!) = 0, approx = false
+ln Gamma(3) = 0.6931471696248477, expected ln(2!) = 0.6931471805599453, approx = false
+ln Gamma(4) = 1.791759458292957, expected ln(3!) = 1.791759469228055, approx = false
+ln Gamma(5) = 3.178053819412848, expected ln(4!) = 3.178053830347946, approx = false
+ln Gamma(6) = 4.787491731846949, expected ln(5!) = 4.787491742782046, approx = false
+ln Gamma(7) = 6.579251201075003, expected ln(6!) = 6.579251212010101, approx = false
+ln Gamma(8) = 8.525161350130317, expected ln(7!) = 8.525161361065415, approx = false
+ln Gamma(9) = 10.60460289181015, expected ln(8!) = 10.60460290274525, approx = false
+ln Gamma(10) = 12.80182747361105, expected ln(9!) = 12.80182748008147, approx = true

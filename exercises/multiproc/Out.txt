@@ -1,0 +1,6 @@
+Number of threads: 8
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234892
+Asymptotic check:  21.30048150234794
+Difference:        9.769962616701378e-13
+Approx OK:         true

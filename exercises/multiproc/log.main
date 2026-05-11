@@ -1,0 +1,144 @@
+Number of threads: 1
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234855
+Asymptotic check:  21.30048150234794
+Difference:        6.075140390748857e-13
+Approx OK:         true
+Number of threads: 1
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234855
+Asymptotic check:  21.30048150234794
+Difference:        6.075140390748857e-13
+Approx OK:         true
+Number of threads: 1
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234855
+Asymptotic check:  21.30048150234794
+Difference:        6.075140390748857e-13
+Approx OK:         true
+Number of threads: 2
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234877
+Asymptotic check:  21.30048150234794
+Difference:        8.242295734817162e-13
+Approx OK:         true
+Number of threads: 2
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234877
+Asymptotic check:  21.30048150234794
+Difference:        8.242295734817162e-13
+Approx OK:         true
+Number of threads: 2
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234877
+Asymptotic check:  21.30048150234794
+Difference:        8.242295734817162e-13
+Approx OK:         true
+Number of threads: 3
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234886
+Asymptotic check:  21.30048150234794
+Difference:        9.201528428093297e-13
+Approx OK:         true
+Number of threads: 3
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234886
+Asymptotic check:  21.30048150234794
+Difference:        9.201528428093297e-13
+Approx OK:         true
+Number of threads: 3
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234886
+Asymptotic check:  21.30048150234794
+Difference:        9.201528428093297e-13
+Approx OK:         true
+Number of threads: 4
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234903
+Asymptotic check:  21.30048150234794
+Difference:        1.087130385712953e-12
+Approx OK:         true
+Number of threads: 4
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234903
+Asymptotic check:  21.30048150234794
+Difference:        1.087130385712953e-12
+Approx OK:         true
+Number of threads: 4
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234903
+Asymptotic check:  21.30048150234794
+Difference:        1.087130385712953e-12
+Approx OK:         true
+Number of threads: 5
+Number of terms:   1000000000
+Harmonic sum:      21.3004815023487
+Asymptotic check:  21.30048150234794
+Difference:        7.531752999057062e-13
+Approx OK:         true
+Number of threads: 5
+Number of terms:   1000000000
+Harmonic sum:      21.3004815023487
+Asymptotic check:  21.30048150234794
+Difference:        7.531752999057062e-13
+Approx OK:         true
+Number of threads: 5
+Number of terms:   1000000000
+Harmonic sum:      21.3004815023487
+Asymptotic check:  21.30048150234794
+Difference:        7.531752999057062e-13
+Approx OK:         true
+Number of threads: 6
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234882
+Asymptotic check:  21.30048150234794
+Difference:        8.739675649849232e-13
+Approx OK:         true
+Number of threads: 6
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234882
+Asymptotic check:  21.30048150234794
+Difference:        8.739675649849232e-13
+Approx OK:         true
+Number of threads: 6
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234882
+Asymptotic check:  21.30048150234794
+Difference:        8.739675649849232e-13
+Approx OK:         true
+Number of threads: 7
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234856
+Asymptotic check:  21.30048150234794
+Difference:        6.146194664324867e-13
+Approx OK:         true
+Number of threads: 7
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234856
+Asymptotic check:  21.30048150234794
+Difference:        6.146194664324867e-13
+Approx OK:         true
+Number of threads: 7
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234856
+Asymptotic check:  21.30048150234794
+Difference:        6.146194664324867e-13
+Approx OK:         true
+Number of threads: 8
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234892
+Asymptotic check:  21.30048150234794
+Difference:        9.769962616701378e-13
+Approx OK:         true
+Number of threads: 8
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234892
+Asymptotic check:  21.30048150234794
+Difference:        9.769962616701378e-13
+Approx OK:         true
+Number of threads: 8
+Number of terms:   1000000000
+Harmonic sum:      21.30048150234892
+Asymptotic check:  21.30048150234794
+Difference:        9.769962616701378e-13
+Approx OK:         true
