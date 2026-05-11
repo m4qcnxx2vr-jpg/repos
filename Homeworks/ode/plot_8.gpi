@@ -1,0 +1,15 @@
+set terminal svg size 600,600 enhanced background rgb 'white'
+set output "figure8.svg"
+
+# Ensure the x and y scales are equal so the '8' isn't squashed
+set size ratio -1 
+
+set title "Three-Body Figure-8 Orbit" font ",14"
+set xlabel "x"
+set ylabel "y"
+set grid
+
+# Plotting the trajectories of the three masses
+plot "8.txt" using 2:3 with lines lw 2 title "Body 1", \
+     "8.txt" using 4:5 with lines lw 2 title "Body 2", \
+     "8.txt" using 6:7 with lines lw 2 title "Body 3"
