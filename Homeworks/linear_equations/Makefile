@@ -1,6 +1,6 @@
 CXXFLAGS += -std=c++23 -Wall -Wextra
 LDLIBS   += -lm
-
+TIME := $(shell command -v gtime >/dev/null 2>&1 && echo gtime || echo time)
 # Default target
 all: Out.txt qr_scaling.svg
 
@@ -18,8 +18,8 @@ Out.txt: main
 # Timing measurements
 out.times.data: main
 	>$@
-	for N in $$(seq 100 50 600); do  \
-		gtime --format "$$N %e" --output $@ --append \
+	for N in $$(seq 100 20 200); do \
+		$(TIME) --format "$$N %e" --output $@ --append \
 		./$< -size $$N 1>out 2>err ;\
 	done
 

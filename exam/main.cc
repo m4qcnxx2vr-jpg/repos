@@ -4,8 +4,6 @@
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
-#include <chrono>
-#include <fstream>
 #include <string>
 
 double matrix_norm(const pp::matrix& A) {
@@ -129,38 +127,24 @@ void test_svd(const pp::matrix& A, const std::string& name) {
               << matrix_norm(reconstructed - A) << "\n";
 }
 
-void timing_test() {
-    std::ofstream file("out.times.data");
-
-    if (!file) {
-        throw std::runtime_error("Could not open out.times.data");
-    }
-
-    std::cout << "\n----------------------------------------\n";
-    std::cout << "Timing test\n";
-    std::cout << "----------------------------------------\n";
-
-    for (int n = 5; n <= 200; n += 5) {
-        pp::matrix A = make_test_matrix(n);
-
-        auto start = std::chrono::high_resolution_clock::now();
-
-        pp::SVD svd(A);
-
-        auto stop = std::chrono::high_resolution_clock::now();
-
-        std::chrono::duration<double> elapsed = stop - start;
-
-        file << n << " " << elapsed.count() << "\n";
-
-        std::cout << "n = " << n
-                  << ", time = " << elapsed.count()
-                  << " s\n";
-    }
+void benchmark_svd(int n) {
+    pp::matrix A = make_test_matrix(n);
+    pp::SVD svd(A);
 }
 
-int main() {
+int main(int argc, char** argv) {
     try {
+        if (argc == 3 && std::string(argv[1]) == "-size") {
+            int n = std::stoi(argv[2]);
+            benchmark_svd(n);
+            return 0;
+        }
+
+        if (argc != 1) {
+            std::cerr << "Usage: " << argv[0] << " [-size N]\n";
+            return 1;
+        }
+
         pp::matrix A(3, 3);
 
         A(0, 0) = 1.0;  A(0, 1) = 2.0;  A(0, 2) = 3.0;
@@ -192,10 +176,9 @@ int main() {
 
         test_svd(E, "Test 4: matrix with negative entries");
 
-        timing_test();
-
     } catch (const std::exception& error) {
         std::cerr << "Error: " << error.what() << "\n";
+        return 1;
     }
 
     return 0;
