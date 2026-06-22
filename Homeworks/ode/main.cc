@@ -10,6 +10,28 @@ using namespace pp;
 double epsilon = 0.0;
 
 // ==========================================
+// Part A: scipy.integrate.odeint example
+// Damped pendulum with friction
+// ==========================================
+vector pendulum(double t, const vector& y) {
+    (void)t;
+
+    double b = 0.25;
+    double c = 5.0;
+
+    double theta = y[0];
+    double omega = y[1];
+
+    vector dydt(2);
+    dydt[0] = omega;
+    dydt[1] = -b * omega - c * std::sin(theta);
+
+    return dydt;
+}
+
+
+
+// ==========================================
 // Planetary ODE
 // ==========================================
 vector orbit(double phi, const vector& y) {
@@ -47,6 +69,45 @@ vector three_body(double t, const vector& z) {
         dzdt[2*i + 1] = ay;
     }
     return dzdt;
+}
+
+void run_pendulum(const std::string& file) {
+    std::ofstream out(file);
+
+    vector y(2);
+    y[0] = std::numbers::pi - 0.1;
+    y[1] = 0.0;
+
+    double t0 = 0.0;
+    double t1 = 10.0;
+    int N = 100;
+    double dt = (t1 - t0) / N;
+
+    double t = t0;
+
+    out << t << " " << y[0] << " " << y[1] << "\n";
+
+    for (int i = 1; i <= N; ++i) {
+        double next_t = t0 + i * dt;
+
+        auto [ts, ys] = driver(
+            pendulum,
+            t,
+            next_t,
+            y,
+            0.01,
+            1e-6,
+            1e-6
+        );
+
+        t = ts.back();
+        y = ys.back();
+
+        out << t << " " << y[0] << " " << y[1] << "\n";
+    }
+
+    std::cout << "Created " << file
+              << " with 101 points for the scipy odeint pendulum example.\n";
 }
 
 void run_orbit(const std::string& file, double eps_val, double u0, double u0p, double tol) {
@@ -94,6 +155,7 @@ void run_figure8(const std::string& file) {
 }
 
 int main() {
+    run_pendulum("pendulum.txt");
     run_orbit("1.txt", 0.0, 1.000001, 0.0, 1e-9);
     run_orbit("2.txt", 0.0, 1.0, -0.5, 1e-5);
     run_orbit("3.txt", 0.01, 1.0, -0.5, 1e-5);

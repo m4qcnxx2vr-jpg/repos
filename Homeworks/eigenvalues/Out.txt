@@ -1,4 +1,13 @@
 A. Jacobi diagonalization with cyclic sweeps
+Generated symmetric 5x5 matrix A:
+
+    0.841     0.989      0.65  -0.00885    -0.664 
+    0.989        -1    -0.751    -0.132     0.551 
+     0.65    -0.751     0.837     0.271    -0.428 
+ -0.00885    -0.132     0.271    -0.404     0.296 
+   -0.664     0.551    -0.428     0.296    -0.159 
+
+
 max|V^T A V - D| = 2.9818611046e-07
 max|V D V^T - A| = 2.16958082722e-07
 max|V^T V - I|   = 6.66133814775e-16
@@ -30,18 +39,6 @@ rmax      ground_state_energy
 10      -0.489228337556
 12      -0.489229427588
 
-Convergence with fixed dr = 0.3 and changing rmax:
-rmax      ground_state_energy
-4      -0.468520949034
-6      -0.488413497043
-8      -0.489187566855
-10      -0.489228337556
-12      -0.489229427588
-
 C. Scaling check for Jacobi diagonalization
-n      time_seconds
-10      2.8416e-05
-15      9.0125e-05
-20      0.000218166
-25      0.000391
-30      0.000690167
+Timing is done externally in the Makefile using time/gtime.
+

@@ -1,0 +1,5 @@
+Created pendulum.txt with 101 points for the scipy odeint pendulum example.
+Created 1.txt with 11367 points.
+Created 2.txt with 153611 points.
+Created 3.txt with 151729 points.
+Created 8.txt (Fig-8) with 33508 points.

@@ -2,7 +2,6 @@
 #include "matrix.h"
 
 #include <algorithm>
-#include <chrono>
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
@@ -139,6 +138,10 @@ void part_A()
     matrix A = random_symmetric_matrix(5);
     matrix A_original = A;
 
+    std::cout << "Generated symmetric 5x5 matrix A:\n";
+    A.print();
+    std::cout << '\n';
+
     pp::Jacobi evd(A);
 
     vector w = evd.w;
@@ -211,44 +214,28 @@ void part_B(double rmax, double dr, int nstates)
     std::cout << "Wavefunctions written to state_0.dat, state_1.dat, ...\n\n";
 
     std::cout << "Convergence with fixed rmax = " << rmax << " and changing dr:\n";
-std::cout << "dr        ground_state_energy\n";
+    std::cout << "dr        ground_state_energy\n";
 
-std::ofstream dr_file("convergence_dr.dat");
+    std::ofstream dr_file("convergence_dr.dat");
 
-for(double test_dr : {0.5, 0.4, 0.3, 0.2, 0.15}) {
-    matrix Htest = hydrogen_hamiltonian(rmax, test_dr);
+    for(double test_dr : {0.5, 0.4, 0.3, 0.2, 0.15}) {
+        matrix Htest = hydrogen_hamiltonian(rmax, test_dr);
 
-    pp::Jacobi test_evd(Htest);
+        pp::Jacobi test_evd(Htest);
 
-    vector ew = test_evd.w;
-    matrix eV = test_evd.V;
+        vector ew = test_evd.w;
+        matrix eV = test_evd.V;
 
-    sort_eigenpairs(ew, eV);
+        sort_eigenpairs(ew, eV);
 
-    std::cout << test_dr << "      " << ew[0] << '\n';
-    dr_file << test_dr << " " << ew[0] << '\n';
-}
+        std::cout << test_dr << "      " << ew[0] << '\n';
+        dr_file << test_dr << " " << ew[0] << '\n';
+    }
 
-std::cout << "\nConvergence with fixed dr = " << dr << " and changing rmax:\n";
-std::cout << "rmax      ground_state_energy\n";
-
-std::ofstream rmax_file("convergence_rmax.dat");
-
-for(double test_rmax : {4.0, 6.0, 8.0, 10.0, 12.0}) {
-    matrix Htest = hydrogen_hamiltonian(test_rmax, dr);
-
-    pp::Jacobi test_evd(Htest);
-
-    vector ew = test_evd.w;
-    matrix eV = test_evd.V;
-
-    sort_eigenpairs(ew, eV);
-
-    std::cout << test_rmax << "      " << ew[0] << '\n';
-    rmax_file << test_rmax << " " << ew[0] << '\n';
-}
     std::cout << "\nConvergence with fixed dr = " << dr << " and changing rmax:\n";
     std::cout << "rmax      ground_state_energy\n";
+
+    std::ofstream rmax_file("convergence_rmax.dat");
 
     for(double test_rmax : {4.0, 6.0, 8.0, 10.0, 12.0}) {
         matrix Htest = hydrogen_hamiltonian(test_rmax, dr);
@@ -261,6 +248,7 @@ for(double test_rmax : {4.0, 6.0, 8.0, 10.0, 12.0}) {
         sort_eigenpairs(ew, eV);
 
         std::cout << test_rmax << "      " << ew[0] << '\n';
+        rmax_file << test_rmax << " " << ew[0] << '\n';
     }
 
     std::cout << '\n';
@@ -269,26 +257,24 @@ for(double test_rmax : {4.0, 6.0, 8.0, 10.0, 12.0}) {
 void part_C()
 {
     std::cout << "C. Scaling check for Jacobi diagonalization\n";
-    std::cout << "n      time_seconds\n";
+    std::cout << "Timing is done externally in the Makefile using time/gtime.\n\n";
+}
 
-    for(int n : {10, 15, 20, 25, 30}) {
-        matrix A = random_symmetric_matrix(n);
-
-        auto start = std::chrono::high_resolution_clock::now();
-
-        pp::Jacobi evd(A);
-
-        auto stop = std::chrono::high_resolution_clock::now();
-
-        std::chrono::duration<double> elapsed = stop - start;
-
-        std::cout << n << "      " << elapsed.count() << '\n';
-    }
+void benchmark_jacobi(int n)
+{
+    matrix A = random_symmetric_matrix(n);
+    pp::Jacobi evd(A);
 }
 
 int main(int argc, char** argv)
 {
     std::cout << std::setprecision(12);
+
+    if(argc == 3 && std::string(argv[1]) == "-size") {
+        int n = std::atoi(argv[2]);
+        benchmark_jacobi(n);
+        return 0;
+    }
 
     Options opt = read_options(argc, argv);
 

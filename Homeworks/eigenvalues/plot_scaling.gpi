@@ -1,0 +1,27 @@
+# plot_scaling.gpi
+# Input: out.times.data
+# column 1 = matrix size n
+# column 2 = elapsed time in seconds
+
+set terminal svg size 800,600 enhanced background rgb 'white'
+set output 'scaling.svg'
+
+set datafile commentschars '#'
+set grid
+set key top left
+
+set title 'Jacobi diagonalization scaling'
+set xlabel 'matrix size n'
+set ylabel 'time [s]'
+
+# Fit time = a*n^3.
+# The intercept is fixed to zero, so gnuplot only fits a.
+f(n) = a*n**3
+a = 1e-8
+
+fit f(x) 'out.times.data' using 1:2 via a
+
+plot 'out.times.data' using 1:2 with points pointtype 7 title 'measured time', \
+     f(x) with lines title sprintf('fit: %.3g n^3', a)
+
+set output

@@ -9,11 +9,18 @@ set title "Radioactive decay of ThX"
 set grid
 set key top right
 
-f(x)  = exp(c0 + c1*x)
-fp(x) = exp((c0 + dc0) + (c1 + dc1)*x)
-fm(x) = exp((c0 - dc0) + (c1 - dc1)*x)
+# Best fit: ln(y) = c0 + c1*t, so y = exp(c0 + c1*t)
+f(x)   = exp(c0 + c1*x)
+
+# Task C: all four combinations of coefficient uncertainties
+fpp(x) = exp((c0 + dc0) + (c1 + dc1)*x)
+fpm(x) = exp((c0 + dc0) + (c1 - dc1)*x)
+fmp(x) = exp((c0 - dc0) + (c1 + dc1)*x)
+fmm(x) = exp((c0 - dc0) + (c1 - dc1)*x)
 
 plot "decay_data.txt" using 1:2:3 with yerrorbars pt 7 ps 1 title "Data", \
-     f(x)  with lines lw 2 title sprintf("Best fit: y = %.2f exp(-%.3f t)", a, lambda), \
-     fp(x) with lines dt 2 lw 2 title "Fit with c + dc", \
-     fm(x) with lines dt 3 lw 2 title "Fit with c - dc"
+     f(x)   with lines lw 2 title sprintf("Best fit: y = %.2f exp(-%.3f t)", a, lambda), \
+     fpp(x) with lines dt 2 lw 2 title "c0+dc0, c1+dc1", \
+     fpm(x) with lines dt 3 lw 2 title "c0+dc0, c1-dc1", \
+     fmp(x) with lines dt 4 lw 2 title "c0-dc0, c1+dc1", \
+     fmm(x) with lines dt 5 lw 2 title "c0-dc0, c1-dc1"
