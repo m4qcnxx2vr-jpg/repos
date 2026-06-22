@@ -1,0 +1,14 @@
+set terminal svg background "white"
+set output "wavefunctions.svg"
+
+set title "Lowest hydrogen s-wave reduced radial wavefunctions"
+set xlabel "r"
+set ylabel "f(r)"
+
+set grid
+set key outside
+
+plot "state_0.dat" using 1:2 with lines title "state 0", \
+     "state_1.dat" using 1:2 with lines title "state 1", \
+     "state_2.dat" using 1:2 with lines title "state 2", \
+     "state_3.dat" using 1:2 with lines title "state 3"

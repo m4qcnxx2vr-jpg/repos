@@ -1,168 +1,300 @@
-#include "matrix.h"
 #include "jacobi.h"
-#include <iostream>
-#include <iomanip>
-#include <string>
+#include "matrix.h"
+
 #include <algorithm>
-#include <vector>
-#include <fstream>
+#include <chrono>
 #include <cmath>
+#include <cstdlib>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <string>
 
-// -------- helpers --------
+using pp::matrix;
+using pp::vector;
 
-static void die_usage(){
-    std::cerr << "Usage: ./main -rmax <number> -dr <number> [-nstates <int>]\n";
-    std::cerr << "Example: ./main -rmax 10 -dr 0.3\n";
-    std::exit(1);
-}
+struct Options {
+    double rmax = 10.0;
+    double dr = 0.3;
+    int nstates = 4;
+};
 
-static bool read_arg(int argc, char** argv, const std::string& key, double& val){
-    for(int i=1;i<argc-1;i++){
-        if(std::string(argv[i])==key){
-            val = std::stod(argv[i+1]);
-            return true;
+Options read_options(int argc, char** argv)
+{
+    Options opt;
+
+    for(int i = 1; i < argc; i++) {
+        std::string arg = argv[i];
+
+        if(arg == "-rmax" && i+1 < argc) {
+            opt.rmax = std::atof(argv[++i]);
+        }
+        else if(arg == "-dr" && i+1 < argc) {
+            opt.dr = std::atof(argv[++i]);
+        }
+        else if(arg == "-nstates" && i+1 < argc) {
+            opt.nstates = std::atoi(argv[++i]);
         }
     }
-    return false;
+
+    return opt;
 }
 
-static bool read_arg_int(int argc, char** argv, const std::string& key, int& val){
-    for(int i=1;i<argc-1;i++){
-        if(std::string(argv[i])==key){
-            val = std::stoi(argv[i+1]);
-            return true;
+matrix diagonal_matrix(const vector& w)
+{
+    matrix D(w.size(), w.size(), 0.0);
+
+    for(int i = 0; i < w.size(); i++) {
+        D(i,i) = w[i];
+    }
+
+    return D;
+}
+
+double max_abs(const matrix& A)
+{
+    double result = 0.0;
+
+    for(int i = 0; i < A.size1(); i++) {
+        for(int j = 0; j < A.size2(); j++) {
+            result = std::max(result, std::fabs(A(i,j)));
         }
     }
-    return false;
+
+    return result;
 }
 
-static double exact_energy(int n){
-    return -0.5 / (double)(n*n);
+matrix identity(int n)
+{
+    matrix I(n,n,0.0);
+    I.setid();
+    return I;
 }
 
-static void sort_eigenpairs(pp::vector& w, pp::matrix& V){
-    int n = w.size();
-    std::vector<int> idx(n);
-    for(int i=0;i<n;i++) idx[i]=i;
+matrix random_symmetric_matrix(int n)
+{
+    matrix A(n,n,0.0);
 
-    std::sort(idx.begin(), idx.end(), [&](int a, int b){ return w[a] < w[b]; });
+    for(int i = 0; i < n; i++) {
+        for(int j = i; j < n; j++) {
+            double x = std::sin(1.0 + 3.0*i + 7.0*j);
 
-    pp::vector ws(n);
-    pp::matrix Vs(n,n,0.0);
-    for(int k=0;k<n;k++){
-        ws[k] = w[idx[k]];
-        for(int i=0;i<n;i++) Vs(i,k) = V(i, idx[k]);
-    }
-    w = ws;
-    V = Vs;
-}
-
-static void normalize_on_grid(pp::vector& f, double dr){
-    // normalize so sum_i |f_i|^2 dr = 1
-    double s = 0.0;
-    for(int i=0;i<f.size();i++) s += f[i]*f[i];
-    s = std::sqrt(s * dr);
-    if(s==0.0) return;
-    for(int i=0;i<f.size();i++) f[i] /= s;
-}
-
-// -------- main --------
-
-int main(int argc, char** argv){
-    double rmax = 0.0;
-    double dr   = 0.0;
-    int nstates = 4; // how many lowest states to print/save
-
-    if(!read_arg(argc, argv, "-rmax", rmax)) die_usage();
-    if(!read_arg(argc, argv, "-dr", dr))     die_usage();
-    read_arg_int(argc, argv, "-nstates", nstates);
-
-    if(rmax <= 0 || dr <= 0) die_usage();
-
-    int npoints = (int)(rmax/dr) - 1;
-    if(npoints < 2){
-        std::cerr << "Error: npoints too small. Increase rmax or decrease dr.\n";
-        return 1;
-    }
-
-    std::cout << "rmax=" << rmax << "  dr=" << dr << "  npoints=" << npoints << "\n";
-
-    // grid
-    pp::vector r(npoints);
-    for(int i=0;i<npoints;i++) r[i] = dr*(i+1);
-
-    // Hamiltonian
-    pp::matrix H(npoints, npoints, 0.0);
-
-    // your snippet uses: (-0.5/dr/dr) times the tridiagonal with (-2 on diag, 1 offdiag)
-    double t = -0.5/(dr*dr);
-
-    for(int i=0;i<npoints-1;i++){
-        H(i,i)     = -2*t;
-        H(i,i+1)   =  1*t;
-        H(i+1,i)   =  1*t;
-    }
-    H(npoints-1, npoints-1) = -2*t;
-
-    for(int i=0;i<npoints;i++){
-        H(i,i) += -1.0/r[i];
-    }
-
-    // Diagonalize
-    pp::Jacobi evd(H, 1e-12);
-
-    // Sort eigenpairs
-    sort_eigenpairs(evd.w, evd.V);
-
-    // Print lowest bound energies (negative ones)
-    std::cout << "\nLowest eigenvalues (Hartree) and exact En=-1/(2n^2):\n";
-    std::cout << std::setw(6) << "n"
-              << std::setw(18) << "numeric"
-              << std::setw(18) << "exact"
-              << std::setw(18) << "abs error"
-              << "\n";
-
-    int printed = 0;
-    for(int k=0;k<npoints && printed<nstates;k++){
-        double ek = evd.w[k];
-        if(ek >= 0) break; // bound states are negative
-        int n = printed + 1;
-        double eex = exact_energy(n);
-        std::cout << std::setw(6) << n
-                  << std::setw(18) << std::setprecision(10) << ek
-                  << std::setw(18) << std::setprecision(10) << eex
-                  << std::setw(18) << std::setprecision(10) << std::fabs(ek - eex)
-                  << "\n";
-        printed++;
-    }
-
-    if(printed==0){
-        std::cout << "\nNo negative eigenvalues found. Try larger rmax and/or smaller dr.\n";
-    }
-
-    // Save eigenfunctions (reduced radial f(r)) for first few bound states
-    // Each file: state_n.dat with columns: r  f(r)
-    int saved = 0;
-    for(int k=0;k<npoints && saved<nstates;k++){
-        if(evd.w[k] >= 0) break;
-
-        pp::vector f(npoints);
-        for(int i=0;i<npoints;i++) f[i] = evd.V(i,k); // kth eigenvector column
-        normalize_on_grid(f, dr);
-
-        int n = saved + 1;
-        std::string fname = "state_" + std::to_string(n) + ".dat";
-        std::ofstream out(fname);
-        for(int i=0;i<npoints;i++){
-            out << r[i] << " " << f[i] << "\n";
+            A(i,j) = x;
+            A(j,i) = x;
         }
-        out.close();
-
-        saved++;
     }
 
-    std::cout << "\nWrote eigenfunctions to files: state_1.dat, state_2.dat, ... (up to nstates)\n";
-    std::cout << "Each file has columns: r  f(r)\n";
+    return A;
+}
+
+matrix hydrogen_hamiltonian(double rmax, double dr)
+{
+    const int npoints = static_cast<int>(rmax/dr) - 1;
+
+    matrix H(npoints, npoints, 0.0);
+
+    const double factor = -0.5/(dr*dr);
+
+    for(int i = 0; i < npoints; i++) {
+        double r = dr*(i+1);
+
+        H(i,i) = -2.0*factor - 1.0/r;
+
+        if(i+1 < npoints) {
+            H(i,i+1) = factor;
+            H(i+1,i) = factor;
+        }
+    }
+
+    return H;
+}
+
+void sort_eigenpairs(vector& w, matrix& V)
+{
+    const int n = w.size();
+
+    for(int i = 0; i < n-1; i++) {
+        int smallest = i;
+
+        for(int j = i+1; j < n; j++) {
+            if(w[j] < w[smallest]) {
+                smallest = j;
+            }
+        }
+
+        if(smallest != i) {
+            std::swap(w[i], w[smallest]);
+
+            for(int row = 0; row < n; row++) {
+                std::swap(V(row,i), V(row,smallest));
+            }
+        }
+    }
+}
+
+void part_A()
+{
+    std::cout << "A. Jacobi diagonalization with cyclic sweeps\n";
+
+    matrix A = random_symmetric_matrix(5);
+    matrix A_original = A;
+
+    pp::Jacobi evd(A);
+
+    vector w = evd.w;
+    matrix V = evd.V;
+    matrix D = diagonal_matrix(w);
+
+    matrix VTAV = V.T()*A_original*V;
+    matrix VDVT = V*D*V.T();
+    matrix VTV = V.T()*V;
+    matrix VVT = V*V.T();
+    matrix I = identity(A.size1());
+
+    std::cout << "max|V^T A V - D| = " << max_abs(VTAV - D) << '\n';
+    std::cout << "max|V D V^T - A| = " << max_abs(VDVT - A_original) << '\n';
+    std::cout << "max|V^T V - I|   = " << max_abs(VTV - I) << '\n';
+    std::cout << "max|V V^T - I|   = " << max_abs(VVT - I) << '\n';
+
+    std::cout << '\n';
+}
+
+void write_wavefunctions(double rmax, double dr, int nstates, const vector& w, const matrix& V)
+{
+    const int npoints = static_cast<int>(rmax/dr) - 1;
+    const int states_to_write = std::min(nstates, w.size());
+
+    const double norm_factor = 1.0/std::sqrt(dr);
+
+    for(int k = 0; k < states_to_write; k++) {
+        std::ofstream file("state_" + std::to_string(k) + ".dat");
+
+        for(int i = 0; i < npoints; i++) {
+            double r = dr*(i+1);
+            double f = norm_factor*V(i,k);
+
+            file << r << ' ' << f << '\n';
+        }
+    }
+}
+
+void part_B(double rmax, double dr, int nstates)
+{
+    std::cout << "B. Hydrogen atom, s-wave radial Schrödinger equation\n";
+    std::cout << "Using rmax = " << rmax << ", dr = " << dr << '\n';
+
+    matrix H = hydrogen_hamiltonian(rmax, dr);
+
+    pp::Jacobi evd(H);
+
+    vector w = evd.w;
+    matrix V = evd.V;
+
+    sort_eigenpairs(w, V);
+
+    std::cout << "Lowest numerical energies compared with exact E_n = -1/(2 n^2):\n";
+    std::cout << "state  numerical           exact               difference\n";
+
+    const int states_to_print = std::min(nstates, w.size());
+
+    for(int k = 0; k < states_to_print; k++) {
+        double exact = -1.0/(2.0*(k+1)*(k+1));
+
+        std::cout << std::setw(5) << k
+                  << std::setw(20) << w[k]
+                  << std::setw(20) << exact
+                  << std::setw(20) << w[k] - exact << '\n';
+    }
+
+    write_wavefunctions(rmax, dr, nstates, w, V);
+
+    std::cout << "Wavefunctions written to state_0.dat, state_1.dat, ...\n\n";
+
+    std::cout << "Convergence with fixed rmax = " << rmax << " and changing dr:\n";
+std::cout << "dr        ground_state_energy\n";
+
+std::ofstream dr_file("convergence_dr.dat");
+
+for(double test_dr : {0.5, 0.4, 0.3, 0.2, 0.15}) {
+    matrix Htest = hydrogen_hamiltonian(rmax, test_dr);
+
+    pp::Jacobi test_evd(Htest);
+
+    vector ew = test_evd.w;
+    matrix eV = test_evd.V;
+
+    sort_eigenpairs(ew, eV);
+
+    std::cout << test_dr << "      " << ew[0] << '\n';
+    dr_file << test_dr << " " << ew[0] << '\n';
+}
+
+std::cout << "\nConvergence with fixed dr = " << dr << " and changing rmax:\n";
+std::cout << "rmax      ground_state_energy\n";
+
+std::ofstream rmax_file("convergence_rmax.dat");
+
+for(double test_rmax : {4.0, 6.0, 8.0, 10.0, 12.0}) {
+    matrix Htest = hydrogen_hamiltonian(test_rmax, dr);
+
+    pp::Jacobi test_evd(Htest);
+
+    vector ew = test_evd.w;
+    matrix eV = test_evd.V;
+
+    sort_eigenpairs(ew, eV);
+
+    std::cout << test_rmax << "      " << ew[0] << '\n';
+    rmax_file << test_rmax << " " << ew[0] << '\n';
+}
+    std::cout << "\nConvergence with fixed dr = " << dr << " and changing rmax:\n";
+    std::cout << "rmax      ground_state_energy\n";
+
+    for(double test_rmax : {4.0, 6.0, 8.0, 10.0, 12.0}) {
+        matrix Htest = hydrogen_hamiltonian(test_rmax, dr);
+
+        pp::Jacobi test_evd(Htest);
+
+        vector ew = test_evd.w;
+        matrix eV = test_evd.V;
+
+        sort_eigenpairs(ew, eV);
+
+        std::cout << test_rmax << "      " << ew[0] << '\n';
+    }
+
+    std::cout << '\n';
+}
+
+void part_C()
+{
+    std::cout << "C. Scaling check for Jacobi diagonalization\n";
+    std::cout << "n      time_seconds\n";
+
+    for(int n : {10, 15, 20, 25, 30}) {
+        matrix A = random_symmetric_matrix(n);
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        pp::Jacobi evd(A);
+
+        auto stop = std::chrono::high_resolution_clock::now();
+
+        std::chrono::duration<double> elapsed = stop - start;
+
+        std::cout << n << "      " << elapsed.count() << '\n';
+    }
+}
+
+int main(int argc, char** argv)
+{
+    std::cout << std::setprecision(12);
+
+    Options opt = read_options(argc, argv);
+
+    part_A();
+    part_B(opt.rmax, opt.dr, opt.nstates);
+    part_C();
 
     return 0;
 }

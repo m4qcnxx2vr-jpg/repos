@@ -1,0 +1,14 @@
+set terminal svg background "white"
+set output "convergence_rmax.svg"
+
+set title "Hydrogen ground-state energy convergence with rmax"
+set xlabel "rmax"
+set ylabel "Ground-state energy"
+
+set grid
+set key outside
+
+exact = -0.5
+
+plot "convergence_rmax.dat" using 1:2 with linespoints title "Numerical", \
+     exact with lines title "Exact E_1 = -0.5"

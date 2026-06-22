@@ -1,0 +1,47 @@
+A. Jacobi diagonalization with cyclic sweeps
+max|V^T A V - D| = 2.9818611046e-07
+max|V D V^T - A| = 2.16958082722e-07
+max|V^T V - I|   = 6.66133814775e-16
+max|V V^T - I|   = 4.4408920985e-16
+
+B. Hydrogen atom, s-wave radial Schrödinger equation
+Using rmax = 10, dr = 0.3
+Lowest numerical energies compared with exact E_n = -1/(2 n^2):
+state  numerical           exact               difference
+    0     -0.489228337556                -0.5     0.0107716624437
+    1     -0.111120223038              -0.125      0.013879776962
+    2     0.0962838611525    -0.0555555555556      0.151839416708
+    3      0.411758523249            -0.03125      0.443008523249
+Wavefunctions written to state_0.dat, state_1.dat, ...
+
+Convergence with fixed rmax = 10 and changing dr:
+dr        ground_state_energy
+0.5      -0.472134576661
+0.4      -0.481454893008
+0.3      -0.489228337556
+0.2      -0.495096746301
+0.15      -0.497217766299
+
+Convergence with fixed dr = 0.3 and changing rmax:
+rmax      ground_state_energy
+4      -0.468520949034
+6      -0.488413497043
+8      -0.489187566855
+10      -0.489228337556
+12      -0.489229427588
+
+Convergence with fixed dr = 0.3 and changing rmax:
+rmax      ground_state_energy
+4      -0.468520949034
+6      -0.488413497043
+8      -0.489187566855
+10      -0.489228337556
+12      -0.489229427588
+
+C. Scaling check for Jacobi diagonalization
+n      time_seconds
+10      2.8416e-05
+15      9.0125e-05
+20      0.000218166
+25      0.000391
+30      0.000690167
