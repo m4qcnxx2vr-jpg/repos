@@ -1,0 +1,49 @@
+============================================================
+A. Newton minimization, numerical gradient/Hessian, forward diff
+============================================================
+
+Rosenbrock function:
+minimum found = (0.999856465, 0.9997114818)
+expected      = (1, 1)
+phi(min)      = 2.081805899e-08
+steps taken   = 19
+
+Himmelblau function (single start):
+minimum found = (-2.805118113, 3.131312506)
+phi(min)      = 2.882526568e-14
+steps taken   = 6
+
+Himmelblau minima from several starting points:
+  (3, 2)  steps = 0
+  (-2.805118092, 3.131312503)  steps = 3
+  (-3.779310432, -3.283186831)  steps = 3
+  (3.584429259, -1.848126876)  steps = 3
+
+============================================================
+B. Higgs boson: Breit-Wigner fit
+============================================================
+
+Fit results:
+mass  m     = 125.9721857 GeV
+width Gamma = 2.086392605 GeV (upper limit on physical width)
+scale A     = 9.876496551
+D(min)      = 26.86951178
+steps taken = 9
+
+============================================================
+C. Central vs forward finite differences
+============================================================
+
+Rosenbrock function:
+forward diff : min = (0.999856465, 0.9997114818)  steps = 19  phi = 2.081805899e-08
+central diff : min = (0.999998306, 0.9999962816)  steps = 19  phi = 1.378800844e-11
+
+Himmelblau function:
+forward diff : min = (-2.805118113, 3.131312506)  steps = 6  phi = 2.882526568e-14
+central diff : min = (-2.805118088, 3.131312523)  steps = 6  phi = 8.582228706e-16
+
+Note: central differences cost more function evaluations per
+gradient/Hessian call, but are more accurate, so they can reach
+the same accuracy in fewer or equal Newton steps; compare the
+step counts and final phi values above to judge which is better
+overall for these problems.

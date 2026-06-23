@@ -1,0 +1,41 @@
+
+set terminal pngcairo size 1200,900 enhanced font "Arial,11"
+set output "plot.png"
+
+set multiplot layout 2,2 title "ANN homework: fit, error, derivatives, antiderivative"
+
+# --- panel 1: network fit vs target function (Part A) ---
+set title "Network fit  F_p(x)  vs  g(x)"
+set xlabel "x"
+set ylabel "y"
+set key top right
+set grid
+plot "curve.txt" using 1:2 with lines lw 2 title "g(x)", \
+     "curve.txt" using 1:3 with lines lw 2 dt 2 title "F_p(x)"
+
+# --- panel 2: fit error ---
+set title "Fit error  F_p(x) - g(x)"
+set ylabel "error"
+unset key
+plot "curve.txt" using 1:($3-$2) with lines lw 2 lc rgb "red" title "error"
+
+# --- panel 3: derivatives (Part B) ---
+set title "Derivatives of F_p(x)"
+set ylabel "value"
+set key top right
+plot "curve.txt" using 1:4 with lines lw 2 title "F_p'(x)", \
+     "curve.txt" using 1:5 with lines lw 2 title "F_p''(x)"
+
+# --- panel 4: antiderivative (Part B) ---
+set title "Antiderivative of F_p(x)"
+set ylabel "value"
+unset key
+plot "curve.txt" using 1:6 with lines lw 2 lc rgb "#228B22" title "antideriv"
+
+unset multiplot
+unset output
+
+# To view interactively instead of/in addition to the PNG, comment
+# the "set terminal pngcairo" / "set output" lines above and use:
+#   set term qt
+#   replot

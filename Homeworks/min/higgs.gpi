@@ -1,0 +1,12 @@
+set terminal pngcairo size 900,600 font "Helvetica,12"
+set output "higgs.png"
+
+set title "Higgs boson: Breit-Wigner fit to H->{/Symbol gg} signal"
+set xlabel "E [GeV]"
+set ylabel "signal {/Symbol s}(E)"
+set grid
+set key top left
+
+plot \
+    "higgs_fit.txt" using 1:2:3 with yerrorbars pt 7 lc rgb "#1f77b4" title "data", \
+    "higgs_curve.txt" using 1:2 with lines lw 2 lc rgb "#d62728" title "Breit-Wigner fit"

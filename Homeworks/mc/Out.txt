@@ -1,0 +1,43 @@
+------------------------------------------------------------
+Task A: Plain Monte Carlo integration
+------------------------------------------------------------
+
+A1: Area of the unit circle
+Exact value: pi = 3.14159265359
+
+N =     1000 estimate =            3.172 estimated error =  0.0512485707118 actual error = 0.0304073464102
+N =     3000 estimate =    3.13733333333 estimated error =   0.030035938967 actual error = 0.00425932025646
+N =    10000 estimate =           3.1536 estimated error =    0.01633770804 actual error = 0.0120073464102
+N =    30000 estimate =    3.13786666667 estimated error = 0.00949606839502 actual error = 0.00372598692313
+N =   100000 estimate =            3.144 estimated error = 0.00518773939207 actual error = 0.00240734641021
+
+A2: Error scaling
+See plot A2.png for a plot of the estimated and actual errors as a function of N.
+
+A3: Volume of ellipsoid with axes a=1, b=2, c=3
+Exact value: 25.1327412287
+Plain MC           estimate = 25.11912         estimated error = 0.0536072555922  actual error = 0.0136212287183
+------------------------------------------------------------
+Task B: Quasi-random Monte Carlo
+------------------------------------------------------------
+
+B1: Difficult singular integral
+Exact value: 1.39320392969
+
+LCG MC             estimate = 1.39499292901    estimated error = 0.0167650796599  actual error = 0.00178899932372
+std::mt19937 MC    estimate = 1.50577903979    estimated error = 0.10372312829    actual error = 0.1125751101
+Halton quasi MC    estimate = 1.37962478365    estimated error = 0.000838026931558 actual error = 0.0135791460312
+
+B2: Comment
+The quasi-random error estimate is obtained by comparing two Halton estimates.
+The LCG and std::mt19937 estimates use pseudo-random numbers.
+------------------------------------------------------------
+Task C: Recursive stratified sampling
+------------------------------------------------------------
+
+C1: Stratified sampling test on the unit circle
+Exact value: pi = 3.14159265359
+
+Stratified MC      estimate = 3.15101417048    estimated error = 0.00527889088039 actual error = 0.00942151688862
+
+Done.

@@ -1,24 +1,32 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -O2
+CXXFLAGS = -Wall -Wextra -Werror -std=c++23 -O
+LDLIBS = -lm
 
-TARGET = main
-SRC = main.cc integrate.cc
+DATA = erf_data.dat erf_accuracy.dat
+PLOTS = erf_comparison.svg erf_diff.svg erf_accuracy.svg
 
-all: $(TARGET)
+all: $(PLOTS)
 
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) -o $@ $^
-
-run: $(TARGET)
-	./$(TARGET) > Out.txt
-	@echo "Output written to Out.txt"
-	@cat Out.txt
-
-plot: Out.txt
+$(PLOTS): $(DATA) plot.gpi
 	gnuplot plot.gpi
 
-clean:
-	rm -f $(TARGET) Out.txt erf_data.dat erf_accuracy.dat \
-	      erf_comparison.svg erf_diff.svg erf_accuracy.svg
+Out.txt $(DATA): main
+	./main > Out.txt
 
-.PHONY: all run plot clean
+main: main.o integrate.o
+	$(CXX) main.o integrate.o -o main $(LDLIBS)
+
+main.o: main.cc integrate.h
+	$(CXX) $(CXXFLAGS) -c main.cc -o main.o
+
+integrate.o: integrate.cc integrate.h
+	$(CXX) $(CXXFLAGS) -c integrate.cc -o integrate.o
+
+.PHONY: all clean test
+
+clean:
+	$(RM) main Out.txt *.o $(DATA) $(PLOTS)
+
+test:
+	@echo $(CXX)
+	@echo $(RM)

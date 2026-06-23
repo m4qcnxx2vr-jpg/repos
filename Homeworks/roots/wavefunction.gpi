@@ -1,0 +1,18 @@
+#!/usr/bin/env gnuplot
+# Plot the numerical hydrogen ground-state wavefunction vs the exact solution
+# Usage: gnuplot wavefunction.gpi
+
+set terminal pngcairo size 900,600 font "Helvetica,12"
+set output "wavefunction.png"
+
+set title "Hydrogen s-state wavefunction: numerical vs exact"
+set xlabel "r  [Bohr radii]"
+set ylabel "f(r)"
+set key top right
+set grid
+
+set xrange [0:8]
+
+plot \
+    "wavefunction.txt" using 1:2 with lines lw 2 lc rgb "#1f77b4" title "numerical f_{E0}(r)", \
+    "wavefunction.txt" using 1:3 with lines lw 2 dt 2 lc rgb "#d62728" title "exact f_0(r) = r e^{-r}"

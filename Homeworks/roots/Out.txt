@@ -1,0 +1,93 @@
+============================================================
+A. Newton's method with numerical Jacobian and line-search
+============================================================
+
+Test 1: root of x^2 - 2 = 0
+numerical root = 1.41421356237
+exact root     = 1.41421356237
+error          = 1.60715885045e-12
+
+Rosenbrock valley function
+minimum found  = (0.999999999893, 0.999999999783)
+expected       = (1, 1)
+
+Himmelblau function
+minima found:
+(3, 2)
+(-2.805118096, 3.13131252016)
+(-3.77931025338, -3.28318599129)
+(3.58442834033, -1.84812652696)
+
+Known Himmelblau minima approximately:
+(3, 2)
+(-2.805118, 3.131312)
+(-3.779310, -3.283186)
+(3.584428, -1.848126)
+
+============================================================
+B. Hydrogen atom bound state by shooting method
+============================================================
+
+Parameters:
+rmin = 0.001
+rmax = 8
+acc  = 1e-06
+eps  = 1e-06
+
+Lowest energy root:
+numerical E0 = -0.499975107682
+exact E0     = -0.5
+error        = 2.48923183064e-05
+
+Convergence study (writing data files for plotting):
+
+vs rmax:
+  rmax = 2  E0 = -0.125000030027  err = 0.374999969973
+  rmax = 3  E0 = -0.423967311139  err = 0.076032688861
+  rmax = 4  E0 = -0.483265471783  err = 0.0167345282167
+  rmax = 5  E0 = -0.496417015356  err = 0.00358298464406
+  rmax = 6  E0 = -0.499277306641  err = 0.000722693358987
+  rmax = 7  E0 = -0.499862584936  err = 0.000137415063945
+  rmax = 8  E0 = -0.499975107682  err = 2.48923183064e-05
+  rmax = 9  E0 = -0.499995674231  err = 4.3257692614e-06
+  rmax = 10  E0 = -0.499999269598  err = 7.30401906179e-07
+  rmax = 12  E0 = -0.499999988504  err = 1.14959632369e-08
+  rmax = 15  E0 = -0.500000005386  err = 5.38570588127e-09
+
+vs rmin:
+  rmin = 0.1  E0 = -0.501825744023  err = 0.00182574402301
+  rmin = 0.01  E0 = -0.499977086859  err = 2.29131408631e-05
+  rmin = 0.001  E0 = -0.499975107682  err = 2.48923183064e-05
+  rmin = 0.0001  E0 = -0.499975105689  err = 2.48943111087e-05
+  rmin = 1e-05  E0 = -0.499975105687  err = 2.4894313242e-05
+  rmin = 1e-06  E0 = -0.499975105685  err = 2.48943145463e-05
+
+vs acc:
+  acc = 0.01  E0 = -0.500501800445  err = 0.000501800444774
+  acc = 0.001  E0 = -0.500006412578  err = 6.41257835099e-06
+  acc = 0.0001  E0 = -0.499976653474  err = 2.33465255147e-05
+  acc = 1e-05  E0 = -0.499975178589  err = 2.48214110125e-05
+  acc = 1e-06  E0 = -0.499975107682  err = 2.48923183064e-05
+  acc = 1e-07  E0 = -0.499975103845  err = 2.4896155327e-05
+  acc = 1e-08  E0 = -0.499975103554  err = 2.48964459986e-05
+
+vs eps:
+  eps = 0.01  E0 = -0.500134390078  err = 0.000134390078429
+  eps = 0.001  E0 = -0.499983175898  err = 1.68241018192e-05
+  eps = 0.0001  E0 = -0.499975491913  err = 2.45080865322e-05
+  eps = 1e-05  E0 = -0.499975127072  err = 2.48729278194e-05
+  eps = 1e-06  E0 = -0.499975107682  err = 2.48923183064e-05
+  eps = 1e-07  E0 = -0.499975106246  err = 2.48937542605e-05
+  eps = 1e-08  E0 = -0.49997510611  err = 2.4893889519e-05
+
+============================================================
+C. Quadratic interpolation line-search / optimization
+============================================================
+
+Testing quadratic interpolation line-search on Rosenbrock:
+minimum found  = (0.999999999998, 0.999999999997)
+expected       = (1, 1)
+
+Part C implementation:
+1. The Jacobian matrix is allocated once before the Newton loop.
+2. The line-search uses quadratic interpolation instead of simple halving.
