@@ -1,39 +1,36 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
-GNUPLOT = gnuplot
+CXXFLAGS = -std=c++23 -O2 -Wall -Wextra
 
-COMMON_SRCS = ann.cc qr.cc matrix.cc
-COMMON_OBJS = $(COMMON_SRCS:.cc=.o)
+EXE = main
+OBJ = main.o ann.o minimize.o qr.o matrix.o
 
+all: Out.txt plots
 
-all: build run-main run-test plot
+Out.txt: $(EXE)
+	./$(EXE) > Out.txt
 
-build: main test_ann
+$(EXE): $(OBJ)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(EXE)
 
-main: main.o $(COMMON_OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+main.o: main.cc ann.h matrix.h
+	$(CXX) $(CXXFLAGS) -c main.cc
 
-test_ann: test_ann.o $(COMMON_OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+ann.o: ann.cc ann.h minimize.h matrix.h
+	$(CXX) $(CXXFLAGS) -c ann.cc
 
-%.o: %.cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+minimize.o: minimize.cc minimize.h qr.h matrix.h
+	$(CXX) $(CXXFLAGS) -c minimize.cc
 
-run-main: main
-	./main
+qr.o: qr.cc qr.h matrix.h
+	$(CXX) $(CXXFLAGS) -c qr.cc
 
-run-test: test_ann
-	./test_ann > out.txt
-	@echo "wrote out.txt"
+matrix.o: matrix.cc matrix.h
+	$(CXX) $(CXXFLAGS) -c matrix.cc
 
-plot: curve.txt plot.gpi
-	@$(GNUPLOT) plot.gpi || \
-		echo "(skipping plot: gnuplot not available -- install it and run 'make plot')"
+plots: ann.tsv plot.gpi
+	gnuplot plot.gpi
 
-curve.txt: main
-	./main
+ann.tsv: Out.txt
 
 clean:
-	rm -f *.o main test_ann params.txt curve.txt out.txt plot.png
-
-.PHONY: all build run-main run-test plot clean
+	rm -f *.o $(EXE) Out.txt ann.tsv *.sv

@@ -42,8 +42,3 @@ Himmelblau function:
 forward diff : min = (-2.805118113, 3.131312506)  steps = 6  phi = 2.882526568e-14
 central diff : min = (-2.805118088, 3.131312523)  steps = 6  phi = 8.582228706e-16
 
-Note: central differences cost more function evaluations per
-gradient/Hessian call, but are more accurate, so they can reach
-the same accuracy in fewer or equal Newton steps; compare the
-step counts and final phi values above to judge which is better
-overall for these problems.

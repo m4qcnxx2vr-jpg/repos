@@ -1,0 +1,29 @@
+set terminal svg size 800,600
+set output "svd_vs_jacobi_timing.svg"
+
+set title "SVD (two-sided Jacobi) vs Jacobi eigenvalue timing"
+set xlabel "matrix size n"
+set ylabel "time [s]"
+set grid
+
+# --- power-law fit, exponent fixed at 3: t = a * n^3 ---
+# Fitted using ALL data points. Note: the smallest-n points sit near the
+# resolution limit of the timer, so they carry some noise into the fit;
+# the fitted constant should be read as approximate, not exact.
+
+f_svd(n)    = a_svd    * n**3
+f_jacobi(n) = a_jacobi * n**3
+
+a_svd    = 1e-6
+a_jacobi = 1e-6
+
+fit f_svd(x)    "svd.times.data"    using 1:2 via a_svd
+fit f_jacobi(x) "jacobi.times.data" using 1:2 via a_jacobi
+
+set key top left
+
+plot \
+    "svd.times.data"    with points pt 7 ps 1.2 lc rgb "#9400d3" title "SVD measured time", \
+    f_svd(x)    with lines lw 2 lc rgb "#2e8b57" title sprintf("Fit: a*N^3 (a=%.5g)", a_svd), \
+    "jacobi.times.data" with points pt 7 ps 1.2 lc rgb "#1f77b4" title "Jacobi measured time", \
+    f_jacobi(x) with lines lw 2 lc rgb "#ff7f0e" title sprintf("Fit: a*N^3 (a=%.5g)", a_jacobi)

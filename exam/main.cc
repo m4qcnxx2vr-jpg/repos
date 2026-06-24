@@ -1,5 +1,6 @@
 #include "matrix.h"
 #include "svd.h"
+#include "jacobi.h"
 
 #include <cmath>
 #include <iostream>
@@ -132,6 +133,11 @@ void benchmark_svd(int n) {
     pp::SVD svd(A);
 }
 
+void benchmark_jacobi(int n) {
+    pp::matrix A = make_test_matrix(n);
+    pp::Jacobi jac(A);
+}
+
 int main(int argc, char** argv) {
     try {
         if (argc == 3 && std::string(argv[1]) == "-size") {
@@ -140,8 +146,27 @@ int main(int argc, char** argv) {
             return 0;
         }
 
+        if (argc == 5 && std::string(argv[1]) == "-size" &&
+            std::string(argv[3]) == "-method") {
+            int n = std::stoi(argv[2]);
+            std::string method = argv[4];
+
+            if (method == "svd") {
+                benchmark_svd(n);
+            } else if (method == "jacobi") {
+                benchmark_jacobi(n);
+            } else {
+                std::cerr << "Unknown method: " << method
+                          << " (use svd or jacobi)\n";
+                return 1;
+            }
+
+            return 0;
+        }
+
         if (argc != 1) {
-            std::cerr << "Usage: " << argv[0] << " [-size N]\n";
+            std::cerr << "Usage: " << argv[0]
+                      << " [-size N] [-method svd|jacobi]\n";
             return 1;
         }
 
