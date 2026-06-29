@@ -3,12 +3,12 @@
 ====================================================================================================
 
 ── Standard test integrals (acc=eps=1e-4) ──────────────────────
-∫₀¹ √x dx  = 2/3             result=0.66668093    exact=0.66666667    |err|=1.43e-05  ncalls=0      OK
-∫₀¹ 1/√x dx  = 2             result=1.99999739    exact=2.00000000    |err|=2.61e-06  ncalls=0      OK
-∫₀¹ √(1-x²) dx  = π/4      result=0.78540631    exact=0.78539816    |err|=8.15e-06  ncalls=0      OK
-∫₀¹ ln(x)/√x dx  = -4        result=-3.99999835   exact=-4.00000000   |err|=1.65e-06  ncalls=0      OK
-∫₀^π sin(x) dx  = 2            result=1.99999983    exact=2.00000000    |err|=1.68e-07  ncalls=0      OK
-∫₁^e ln(x) dx  = 1              result=1.00000073    exact=1.00000000    |err|=7.29e-07  ncalls=0      OK
+∫₀¹ √x dx  = 2/3             result=0.66668093    exact=0.66666667    |err|=1.43e-05  ncalls=40     OK
+∫₀¹ 1/√x dx  = 2             result=1.99999739    exact=2.00000000    |err|=2.61e-06  ncalls=17140  OK
+∫₀¹ √(1-x²) dx  = π/4      result=0.78540631    exact=0.78539816    |err|=8.15e-06  ncalls=52     OK
+∫₀¹ ln(x)/√x dx  = -4        result=-3.99999835   exact=-4.00000000   |err|=1.65e-06  ncalls=29972  OK
+∫₀^π sin(x) dx  = 2            result=1.99999983    exact=2.00000000    |err|=1.68e-07  ncalls=96     OK
+∫₁^e ln(x) dx  = 1              result=1.00000073    exact=1.00000000    |err|=7.29e-07  ncalls=32     OK
 
 ── erf(1) accuracy vs acc (eps=0) ──────────────────────────────
   Reference erf(1) = 0.84270079294971

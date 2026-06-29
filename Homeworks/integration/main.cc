@@ -24,7 +24,7 @@ void test(const std::string& label,
           double acc = 1e-4, double eps = 1e-4)
 {
     CountedF cf{f};
-    double result = integrate(cf, a, b, acc, eps);
+    double result = integrate(std::ref(cf), a, b, acc, eps);
     double err    = std::abs(result - exact);
     bool   ok     = err < acc + eps * std::abs(exact);
 

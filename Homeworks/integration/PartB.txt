@@ -1,0 +1,29 @@
+==========================================================================================
+Part B: plain integrator vs Clenshaw-Curtis on endpoint singularities
+==========================================================================================
+
+∫0^1 1/sqrt(x) dx = 2     
+    plain:  result=1.999999999  |err|=1.05e-09  ncalls=123900
+    CC:     result=1.9999999999  |err|=6.23e-11  ncalls=352
+
+∫0^1 ln(x)/sqrt(x) dx = -4
+    plain:  result=-3.9999999994  |err|=5.87e-10  ncalls=302996
+    CC:     result=-3.9999999994  |err|=5.69e-10  ncalls=1932
+
+∫0^1 1/sqrt(1-x) dx = 2 (other endpoint)
+    plain:  result=1.9999999899  |err|=1.01e-08  ncalls=5464
+    CC:     result=1.9999999999  |err|=6.24e-11  ncalls=352
+
+∫0^1 sqrt(x) dx = 2/3 (smooth, sanity check)
+    plain:  result=0.6666666797  |err|=1.30e-08  ncalls=276
+    CC:     result=0.6666668380  |err|=1.71e-07  ncalls=436
+
+==========================================================================================
+Part B: infinite-limit integrals
+==========================================================================================
+
+∫_-inf^inf exp(-x²) dx = √π  result=1.7724538299  exact=1.7724538509  |err|=2.10e-08  ncalls=1128
+∫0^inf exp(-x) dx = 1       result=0.9999999880  exact=1.0000000000  |err|=1.20e-08  ncalls=540
+∫0^inf 1/(1+x²) dx = π/2  result=1.5707963311  exact=1.5707963268  |err|=4.32e-09  ncalls=584
+∫-inf^0 exp(x) dx = 1       result=0.9999999880  exact=1.0000000000  |err|=1.20e-08  ncalls=540
+∫-inf^inf 1/(1+x²) dx = π  result=3.1415928934  exact=3.1415926536  |err|=2.40e-07  ncalls=936

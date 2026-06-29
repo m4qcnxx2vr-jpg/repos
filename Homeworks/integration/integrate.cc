@@ -4,18 +4,6 @@
 #include <limits>
 
 // ──────────────────────────────────────────────────────────────────────────────
-// Recursive open 4-point adaptive integrator
-//
-// Higher-order rule (degree-4 precision, 4 points):
-//   Q = (2*f1 + f2 + f3 + 2*f4) / 6 * (b-a)
-//
-// Embedded lower-order rule (degree-2 precision, same 4 points):
-//   q = (f1 + f2 + f3 + f4) / 4 * (b-a)
-//
-// Points at x = a + h/6, a + 2h/6, a + 4h/6, a + 5h/6  (open: avoid endpoints)
-// On subdivision, f2 becomes f1 of the right child, f3 becomes f4 of the left
-// child — so only 2 new evaluations are needed per recursive split instead of 4.
-// ──────────────────────────────────────────────────────────────────────────────
 double integrate(
     const std::function<double(double)>& f,
     double a, double b,
@@ -47,6 +35,9 @@ double integrate(
         return Q;
     } else {
         double mid = (a + b) / 2.0;
+        if (mid == a || mid == b) {
+            return Q;
+        }
         double acc2 = acc / std::sqrt(2.0);  // distribute accuracy budget
         // Left half reuses f1, f2; right half reuses f3, f4
         return integrate(f, a,   mid, acc2, eps, f1, f2)
@@ -64,7 +55,6 @@ double my_erf(double z, double acc, double eps)
     if (z < 0.0) {
         return -my_erf(-z, acc, eps);
     } else if (z <= 1.0) {
-        // erf(z) = 2/√π ∫₀ᶻ exp(-x²) dx
         auto integrand = [](double x) { return std::exp(-x*x); };
         return two_over_sqrtpi * integrate(integrand, 0.0, z, acc, eps);
     } else {
@@ -75,5 +65,77 @@ double my_erf(double z, double acc, double eps)
             return std::exp(-u*u) / (t*t);
         };
         return 1.0 - two_over_sqrtpi * integrate(integrand, 0.0, 1.0, acc, eps);
+    }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Part B: Clenshaw–Curtis variable transformation
+double integrate_cc(
+    const std::function<double(double)>& f,
+    double a, double b,
+    double acc,
+    double eps)
+{
+    double half = (b - a) / 2.0;
+    auto transformed = [&f, a, b, half](double theta) {
+        double x;
+        if (theta < M_PI / 2.0) {
+            // near theta=0 -> x near b; cos(theta) is well-conditioned here,
+            // but compute x as b - half*(1-cos(theta)) to stay precise near x=b
+            double s = std::sin(theta / 2.0);
+            x = b - half * 2.0 * s * s;
+        } else {
+            // near theta=pi -> x near a; compute x as a + half*(1+cos(theta))
+            double c = std::cos(theta / 2.0);
+            x = a + half * 2.0 * c * c;
+        }
+        return f(x) * std::sin(theta) * half;
+    };
+
+    return integrate(transformed, 0.0, M_PI, acc, eps);
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Part B: infinite/semi-infinite limits, built on integrate_cc
+double integrate_inf(
+    const std::function<double(double)>& f,
+    double a, double b,
+    double acc,
+    double eps)
+{
+    bool a_inf = std::isinf(a);
+    bool b_inf = std::isinf(b);
+
+    if (a_inf && b_inf) {
+        // x = t/(1-t^2), t in (-1, 1)
+        auto transformed = [&f](double t) {
+            double t2 = t * t;
+            double denom = 1.0 - t2;
+            double x = t / denom;
+            double dxdt = (1.0 + t2) / (denom * denom);
+            return f(x) * dxdt;
+        };
+        return integrate_cc(transformed, -1.0, 1.0, acc, eps);
+    } else if (b_inf) {
+        // [a, +inf): x = a + t/(1-t), t in [0,1)
+        auto transformed = [&f, a](double t) {
+            double denom = 1.0 - t;
+            double x = a + t / denom;
+            double dxdt = 1.0 / (denom * denom);
+            return f(x) * dxdt;
+        };
+        return integrate_cc(transformed, 0.0, 1.0, acc, eps);
+    } else if (a_inf) {
+        // (-inf, b]: x = b - t/(1-t), t in [0,1)
+        auto transformed = [&f, b](double t) {
+            double denom = 1.0 - t;
+            double x = b - t / denom;
+            double dxdt = 1.0 / (denom * denom);
+            return f(x) * dxdt;
+        };
+        return integrate_cc(transformed, 0.0, 1.0, acc, eps);
+    } else {
+        // Both finite: no transformation needed
+        return integrate_cc(f, a, b, acc, eps);
     }
 }
