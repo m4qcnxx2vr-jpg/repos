@@ -4,7 +4,9 @@ LDLIBS = -lstdc++ -lm
 
 TIME := $(shell command -v gtime >/dev/null 2>&1 && echo gtime || echo /usr/bin/time)
 
-all: Out.txt
+.PHONY: all clean times comparison test
+
+all: Out.txt out.times.svg svd_vs_jacobi_timing.svg
 
 times: out.times.svg
 
@@ -17,7 +19,7 @@ out.times.data: main
 	>$@
 	for N in $$(seq 5 5 200); do \
 		$(TIME) --format "$$N %e" --output $@ --append \
-		./$< -size $$N 1>out 2>err ; \
+		./main -size $$N -method jacobi 1>out 2>err ; \
 	done
 
 out.times.svg: out.times.data timing.gpi
@@ -27,14 +29,14 @@ svd.times.data: main
 	>$@
 	for N in $$(seq 5 5 200); do \
 		$(TIME) --format "$$N %e" --output $@ --append \
-		./$< -size $$N -method svd 1>out 2>err ; \
+		./main -size $$N -method svd 1>out 2>err ; \
 	done
 
 jacobi.times.data: main
 	>$@
 	for N in $$(seq 5 5 200); do \
 		$(TIME) --format "$$N %e" --output $@ --append \
-		./$< -size $$N -method jacobi 1>out 2>err ; \
+		./main -size $$N -method jacobi 1>out 2>err ; \
 	done
 
 svd_vs_jacobi_timing.svg: svd.times.data jacobi.times.data svd_vs_jacobi.gpi
@@ -55,7 +57,8 @@ svd.o: svd.cc svd.h matrix.h
 jacobi.o: jacobi.cc jacobi.h matrix.h
 	$(CXX) $(CXXFLAGS) -c jacobi.cc -o jacobi.o
 
-.PHONY: all clean times comparison test
+test: all
+	cat Out.txt
 
 clean:
 	$(RM) main *.o Out.txt \
