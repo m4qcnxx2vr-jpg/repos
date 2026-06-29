@@ -1,7 +1,7 @@
 
 
 *******************************************************************************
-Wed Jun 24 20:51:34 2026
+Mon Jun 29 10:04:06 2026
 
 
 FIT:    data read from "out.times.data" using 1:2
@@ -14,24 +14,24 @@ function used for fitting: f(x)
 fitted parameters initialized with current variable values
 
 iter      chisq       delta/lim  lambda   a            
-   0 6.3959306912e-01   0.00e+00  3.16e-03    1.000000e-09
-   3 8.7852203809e-04  -2.70e-03  3.16e-06    4.103424e-08
+   0 2.5570951191e+00   0.00e+00  3.16e-03    1.000000e-09
+   3 3.0749197040e-03  -3.09e-03  3.16e-06    8.105534e-08
 
 After 3 iterations the fit converged.
-final sum of squares of residuals : 0.000878522
-rel. change during last iteration : -2.70178e-08
+final sum of squares of residuals : 0.00307492
+rel. change during last iteration : -3.08664e-08
 
 degrees of freedom    (FIT_NDF)                        : 39
-rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00474618
-variance of residuals (reduced chisquare) = WSSR/ndf   : 2.25262e-05
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00887942
+variance of residuals (reduced chisquare) = WSSR/ndf   : 7.88441e-05
 
 Final set of parameters            Asymptotic Standard Error
 =======================            ==========================
-a               = 4.10342e-08      +/- 2.378e-10    (0.5794%)
+a               = 8.10553e-08      +/- 4.448e-10    (0.5488%)
 
 
 *******************************************************************************
-Wed Jun 24 20:51:38 2026
+Mon Jun 29 10:04:19 2026
 
 
 FIT:    data read from "svd.times.data"    using 1:2
@@ -44,24 +44,24 @@ function used for fitting: f_svd(x)
 fitted parameters initialized with current variable values
 
 iter      chisq       delta/lim  lambda   a_svd        
-   0 3.6644321156e+02   0.00e+00  3.16e+00    1.000000e-06
-   4 9.7466495547e-04  -1.22e-10  3.16e-04    4.108325e-08
+   0 3.3648018656e+02   0.00e+00  3.16e+00    1.000000e-06
+   3 3.6496848576e-03  -3.43e-01  3.16e-03    8.112690e-08
 
-After 4 iterations the fit converged.
-final sum of squares of residuals : 0.000974665
-rel. change during last iteration : -1.22362e-15
+After 3 iterations the fit converged.
+final sum of squares of residuals : 0.00364968
+rel. change during last iteration : -3.42606e-06
 
 degrees of freedom    (FIT_NDF)                        : 39
-rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00499914
-variance of residuals (reduced chisquare) = WSSR/ndf   : 2.49914e-05
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00967376
+variance of residuals (reduced chisquare) = WSSR/ndf   : 9.35817e-05
 
 Final set of parameters            Asymptotic Standard Error
 =======================            ==========================
-a_svd           = 4.10832e-08      +/- 2.504e-10    (0.6095%)
+a_svd           = 8.11269e-08      +/- 4.846e-10    (0.5973%)
 
 
 *******************************************************************************
-Wed Jun 24 20:51:38 2026
+Mon Jun 29 10:04:19 2026
 
 
 FIT:    data read from "jacobi.times.data" using 1:2
@@ -74,17 +74,17 @@ function used for fitting: f_jacobi(x)
 fitted parameters initialized with current variable values
 
 iter      chisq       delta/lim  lambda   a_jacobi     
-   0 3.9162793406e+02   0.00e+00  3.16e+00    1.000000e-06
-   4 2.8991850793e-04  -5.61e-11  3.16e-04    8.677842e-09
+   0 3.8426469656e+02   0.00e+00  3.16e+00    1.000000e-06
+   4 1.0738565223e-03  -4.04e-11  3.16e-04    1.804230e-08
 
 After 4 iterations the fit converged.
-final sum of squares of residuals : 0.000289919
-rel. change during last iteration : -5.60952e-16
+final sum of squares of residuals : 0.00107386
+rel. change during last iteration : -4.03854e-16
 
 degrees of freedom    (FIT_NDF)                        : 39
-rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.0027265
-variance of residuals (reduced chisquare) = WSSR/ndf   : 7.43381e-06
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00524736
+variance of residuals (reduced chisquare) = WSSR/ndf   : 2.75348e-05
 
 Final set of parameters            Asymptotic Standard Error
 =======================            ==========================
-a_jacobi        = 8.67784e-09      +/- 1.366e-10    (1.574%)
+a_jacobi        = 1.80423e-08      +/- 2.629e-10    (1.457%)

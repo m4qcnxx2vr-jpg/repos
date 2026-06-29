@@ -40,7 +40,7 @@ Build and run
 
 Run
 
-    make
+    make, make times, make comparison
 
 This compiles the program, runs it, and creates
 
